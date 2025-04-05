@@ -1,39 +1,38 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= data.email %> - اطلاعات اشتراک</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;500;600;700&display=swap">
+    <title><%= data.email %> - Subscription Panel</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #a855f7 100%);
-            --secondary-gradient: linear-gradient(135deg, #3b82f6 0%, #22d3ee 100%);
-            --success-gradient: linear-gradient(135deg, #16a34a 0%, #4ade80 100%);
-            --warning-gradient: linear-gradient(135deg, #d97706 0%, #facc15 100%);
-            --danger-gradient: linear-gradient(135deg, #dc2626 0%, #f87171 100%);
-            --disabled-gradient: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
-            --background-color: #f1f5f9;
-            --card-background: rgba(255, 255, 255, 0.95);
-            --glass-background: rgba(255, 255, 255, 0.6);
-            --text-primary: #1e293b;
-            --text-secondary: #475569;
-            --text-tertiary: #64748b;
-            --border-radius: 12px;
-            --box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
-            --transition-fast: 0.15s;
-            --transition-normal: 0.25s;
-            --blur-sm: 6px;
+            --primary-gradient: linear-gradient(135deg, #8B00FF 0%, #00DDEB 100%);
+            --secondary-gradient: linear-gradient(135deg, #FF007A 0%, #00DDEB 100%);
+            --success-gradient: linear-gradient(135deg, #00FF7F 0%, #39FF14 100%);
+            --warning-gradient: linear-gradient(135deg, #FF4500 0%, #FFA500 100%);
+            --danger-gradient: linear-gradient(135deg, #FF0000 0%, #FF4040 100%);
+            --disabled-gradient: linear-gradient(135deg, #4B4B4B 0%, #808080 100%);
+            --background-color: #0A0A0A;
+            --card-background: rgba(20, 20, 20, 0.9);
+            --glass-background: rgba(40, 40, 40, 0.6);
+            --text-primary: #E0E0E0;
+            --text-secondary: #00DDEB;
+            --text-tertiary: #8B00FF;
+            --border-radius: 10px;
+            --box-shadow: 0 0 15px rgba(139, 0, 255, 0.5), 0 0 25px rgba(0, 221, 235, 0.3);
+            --glow-effect: 0 0 10px rgba(255, 0, 122, 0.8), 0 0 20px rgba(0, 221, 235, 0.6);
+            --transition-fast: 0.2s;
+            --transition-normal: 0.3s;
+            --blur-sm: 5px;
         }
 
         [data-theme="dark"] {
-            --background-color: #1e293b;
-            --card-background: rgba(30, 41, 59, 0.95);
-            --glass-background: rgba(30, 41, 59, 0.6);
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
+            --background-color: #1A1A1A;
+            --card-background: rgba(30, 30, 30, 0.9);
+            --glass-background: rgba(50, 50, 50, 0.6);
         }
 
         * {
@@ -43,11 +42,11 @@
         }
 
         body {
-            font-family: 'Vazir', sans-serif;
+            font-family: 'Orbitron', sans-serif;
             background: var(--background-color);
-            background-image: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
-            background-size: 150% 150%;
-            animation: gradientShift 20s infinite alternate ease-in-out;
+            background-image: linear-gradient(135deg, rgba(139, 0, 255, 0.1) 0%, rgba(0, 221, 235, 0.1) 100%);
+            background-size: 200% 200%;
+            animation: cyberShift 15s infinite alternate ease-in-out;
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
@@ -57,14 +56,14 @@
             padding: 1.5rem;
         }
 
-        @keyframes gradientShift {
+        @keyframes cyberShift {
             0% { background-position: 0% 50%; }
             100% { background-position: 100% 50%; }
         }
 
         .container {
             width: 100%;
-            max-width: 500px;
+            max-width: 520px;
         }
 
         .card {
@@ -72,12 +71,19 @@
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             overflow: hidden;
-            padding: 1rem;
+            padding: 1.5rem;
             backdrop-filter: blur(var(--blur-sm));
+            border: 1px solid rgba(139, 0, 255, 0.3);
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: var(--box-shadow); }
+            100% { box-shadow: var(--glow-effect); }
         }
 
         .card-header {
-            padding: 1.5rem 1.5rem 0;
+            padding: 1rem 0;
         }
 
         .card-title {
@@ -88,11 +94,12 @@
         }
 
         h1 {
-            font-size: 1.75rem;
+            font-size: 2rem;
             font-weight: 700;
             background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(139, 0, 255, 0.5);
         }
 
         .username {
@@ -115,24 +122,26 @@
             border-radius: var(--border-radius);
             padding: 1rem;
             transition: all var(--transition-normal) ease;
+            border: 1px solid rgba(0, 221, 235, 0.2);
         }
 
         .info-item:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--box-shadow);
+            transform: translateY(-5px);
+            box-shadow: var(--glow-effect);
         }
 
         .info-label {
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 500;
             color: var(--text-tertiary);
             margin-bottom: 0.5rem;
             text-transform: uppercase;
         }
 
         .info-value {
-            font-size: 1.125rem;
+            font-size: 1.25rem;
             font-weight: 700;
+            color: var(--text-secondary);
         }
 
         .download-section {
@@ -140,28 +149,20 @@
         }
 
         .section-title {
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 700;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 1rem;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: "";
-            position: absolute;
-            bottom: -0.25rem;
-            right: 0;
-            width: 2.5rem;
-            height: 0.15rem;
-            background: var(--primary-gradient);
-            border-radius: 0.1rem;
+            text-shadow: 0 0 8px rgba(255, 0, 122, 0.5);
         }
 
         .platforms-container {
             background: var(--glass-background);
             border-radius: var(--border-radius);
             padding: 1rem;
-            transition: all var(--transition-normal) ease;
+            border: 1px solid rgba(255, 0, 122, 0.2);
         }
 
         .platforms-grid {
@@ -173,7 +174,7 @@
 
         .platform-card {
             flex: 1;
-            min-width: 80px;
+            min-width: 90px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -186,12 +187,12 @@
         }
 
         .platform-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--box-shadow);
+            transform: translateY(-5px);
+            box-shadow: var(--glow-effect);
         }
 
         .platform-icon {
-            font-size: 2rem;
+            font-size: 2.5rem;
             background: var(--secondary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -200,7 +201,7 @@
 
         .platform-card span {
             font-size: 0.875rem;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .theme-toggle {
@@ -213,13 +214,14 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            color: var(--text-tertiary);
+            color: var(--text-secondary);
             transition: all var(--transition-normal) ease;
         }
 
         .theme-toggle:hover {
-            color: var(--text-primary);
+            color: #FF007A;
             transform: rotate(30deg);
+            box-shadow: var(--glow-effect);
         }
 
         .links-section {
@@ -230,6 +232,7 @@
             background: var(--glass-background);
             border-radius: var(--border-radius);
             overflow: hidden;
+            border: 1px solid rgba(139, 0, 255, 0.2);
         }
 
         .accordion-header {
@@ -245,7 +248,7 @@
         }
 
         .accordion-header:hover {
-            opacity: 0.9;
+            box-shadow: var(--glow-effect);
         }
 
         .accordion-header::after {
@@ -283,22 +286,22 @@
             padding: 0.75rem;
             border-radius: var(--border-radius);
             transition: all var(--transition-normal) ease;
+            border: 1px solid rgba(0, 221, 235, 0.2);
         }
 
         .link-item:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--box-shadow);
+            transform: translateY(-3px);
+            box-shadow: var(--glow-effect);
         }
 
         .link-item input {
             flex: 1;
             background: transparent;
             border: none;
-            color: var(--text-primary);
+            color: var(--text-secondary);
             font-size: 0.875rem;
             padding: 0.25rem;
             outline: none;
-            text-align: right;
         }
 
         .link-item button {
@@ -319,7 +322,7 @@
         }
 
         .copy-button:hover {
-            opacity: 0.9;
+            box-shadow: var(--glow-effect);
         }
 
         .qr-button {
@@ -328,7 +331,7 @@
         }
 
         .qr-button:hover {
-            opacity: 0.9;
+            box-shadow: var(--glow-effect);
         }
 
         .qr-popup {
@@ -338,15 +341,16 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: var(--card-background);
-            padding: 1.25rem;
+            padding: 1.5rem;
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
             backdrop-filter: blur(var(--blur-sm));
+            border: 1px solid rgba(255, 0, 122, 0.3);
             z-index: 1000;
         }
 
         .qr-close-button {
-            text-align: left;
+            text-align: right;
             margin-bottom: 0.5rem;
         }
 
@@ -366,35 +370,28 @@
         if (bytes === 0) return '∞'; 
         const k = 1024; 
         const dm = decimals < 0 ? 0 : decimals; 
-        const sizes = ['بایت', 'کیلوبایت', 'مگابایت', 'گیگابایت', 'ترابایت']; 
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']; 
         const i = Math.floor(Math.log(bytes) / Math.log(k)); 
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]; 
     } %>
 
     <% function formatRemainingTime(expiryTime) { 
-        try { 
-            if (!expiryTime) throw new Error("زمان انقضا تعریف نشده است."); 
-            const expiryTimeNum = parseInt(expiryTime, 10); 
-            if (isNaN(expiryTimeNum)) throw new Error("زمان انقضا باید عدد باشد."); 
-            const currentTime = Date.now(); 
-            if (expiryTimeNum === 0) return "∞"; 
-            if (expiryTimeNum > currentTime) { 
-                const remaining = expiryTimeNum - currentTime; 
-                const days = Math.floor(remaining / (1000 * 60 * 60 * 24)); 
-                const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); 
-                const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60)); 
-                let result = []; 
-                if (days > 0) result.push(`${days} روز`); 
-                if (hours > 0) result.push(`${hours} ساعت`); 
-                if (minutes > 0) result.push(`${minutes} دقیقه`); 
-                return result.join(" و ") || "کمتر از یک دقیقه"; 
-            } else { 
-                return "منقضی شده"; 
-            } 
-        } catch (error) { 
-            console.error("خطا:", error.message); 
-            return "خطا"; 
+        if (expiryTime === undefined || expiryTime === null || expiryTime === 0) return "Unlimited"; 
+        const expiryTimeNum = parseInt(expiryTime, 10); 
+        if (isNaN(expiryTimeNum)) return "Invalid"; 
+        const currentTime = Date.now(); 
+        if (expiryTimeNum > currentTime) { 
+            const remaining = expiryTimeNum - currentTime; 
+            const days = Math.floor(remaining / (1000 * 60 * 60 * 24)); 
+            const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); 
+            const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60)); 
+            let result = []; 
+            if (days > 0) result.push(`${days} days`); 
+            if (hours > 0) result.push(`${hours} hours`); 
+            if (minutes > 0) result.push(`${minutes} mins`); 
+            return result.join(", ") || "Less than a minute"; 
         } 
+        return "Expired"; 
     } %>
 
     <% function getConnectionTitle(link) { 
@@ -407,7 +404,7 @@
                 const decodedData = JSON.parse(atob(decodeURI(base64Data))); 
                 return decodedData.ps || null; 
             } catch (e) { 
-                console.error("خطا در پردازش vmess:", e); 
+                console.error("Error parsing vmess:", e); 
                 return null; 
             } 
         } else { 
@@ -425,13 +422,13 @@
     } %>
 </head>
 
-<body data-theme="light">
+<body data-theme="dark">
     <div class="container">
         <div class="card">
             <div class="card-header">
                 <div class="card-title">
-                    <h1>اشتراک شما</h1>
-                    <button class="theme-toggle" id="themeToggle" aria-label="تغییر تم">
+                    <h1>Subscription</h1>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="5"></circle>
                             <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -446,48 +443,48 @@
                     </button>
                 </div>
                 <div class="username">
-                    <i class="fas fa-user-circle"></i> <%= data.email %>
+                    <i class="fas fa-user-astronaut"></i> <%= data.email %>
                 </div>
             </div>
             <div class="card-body">
                 <div class="info-grid">
                     <div class="info-item">
-                        <div class="info-label">وضعیت</div>
-                        <div class="info-value"><%= data.enable ? "فعال" : "غیرفعال" %></div>
+                        <div class="info-label">Status</div>
+                        <div class="info-value"><%= data.enable ? "Active" : "Disabled" %></div>
                     </div>
                     <div class="info-item">
-                        <div class="info-label">محدودیت داده</div>
+                        <div class="info-label">Data Limit</div>
                         <div class="info-value"><%= formatBytes(data.total) %></div>
                     </div>
                     <div class="info-item">
-                        <div class="info-label">داده مصرف‌شده</div>
+                        <div class="info-label">Data Used</div>
                         <div class="info-value"><%= formatBytes((data.up + data.down)) %></div>
                     </div>
                     <div class="info-item">
-                        <div class="info-label">انقضا</div>
+                        <div class="info-label">Expiration</div>
                         <div class="info-value"><%= formatRemainingTime(data.expiryTime) %></div>
                     </div>
                 </div>
 
                 <div class="download-section">
-                    <h2 class="section-title">دانلود V2Ray</h2>
+                    <h2 class="section-title">Download V2Ray</h2>
                     <div class="platforms-container">
                         <div class="platforms-grid">
                             <a href="v2rayng://install-config?url=<%= data.suburl %>" class="platform-card android">
                                 <i class="fab fa-android platform-icon"></i>
-                                <span>اندروید</span>
+                                <span>Android</span>
                             </a>
                             <a href="https://github.com/2dust/v2rayN/releases/download/7.10.5/v2rayN-windows-64.zip" class="platform-card windows">
                                 <i class="fab fa-windows platform-icon"></i>
-                                <span>ویندوز</span>
+                                <span>Windows</span>
                             </a>
                             <a href="https://github.com/MatsuriDayo/nekoray/releases/download/4.0.1/nekoray-4.0.1-2024-12-12-linux64.zip" class="platform-card linux">
                                 <i class="fab fa-linux platform-icon"></i>
-                                <span>لینوکس</span>
+                                <span>Linux</span>
                             </a>
                             <a href="streisand://install-config?url=<%= data.suburl %>" class="platform-card ios">
                                 <i class="fab fa-apple platform-icon"></i>
-                                <span>آی‌اواس</span>
+                                <span>iOS</span>
                             </a>
                         </div>
                     </div>
@@ -495,18 +492,18 @@
 
                 <% if (data.enable) { %>
                 <div class="links-section">
-                    <h2 class="section-title">لینک‌های پیکربندی</h2>
+                    <h2 class="section-title">Config Links</h2>
                     <div class="accordion">
-                        <div class="accordion-header" id="accordionToggle">نمایش لینک‌ها</div>
+                        <div class="accordion-header" id="accordionToggle">Show Links</div>
                         <div class="accordion-content" id="accordionContent">
                             <ul class="links-list">
                                 <% const decodedFromBase64 = Buffer.from(data.suburl_content, 'base64').toString('utf-8'); 
                                    const linksArray = decodedFromBase64.split('\n').filter(link => link.trim() !== ''); 
                                    linksArray.forEach(link => { %>
                                 <li class="link-item">
-                                    <input type="text" value="<%= getConnectionTitle(link) || 'بدون نام' %>" readonly>
-                                    <button class="copy-button" onclick="copyLink('<%= link %>', this)"><i class="fas fa-copy"></i> کپی</button>
-                                    <button class="qr-button" data-link="<%= link %>"><i class="fas fa-qrcode"></i> کیوآر</button>
+                                    <input type="text" value="<%= getConnectionTitle(link) || 'Unnamed' %>" readonly>
+                                    <button class="copy-button" onclick="copyLink('<%= link %>', this)"><i class="fas fa-copy"></i> Copy</button>
+                                    <button class="qr-button" data-link="<%= link %>"><i class="fas fa-qrcode"></i> QR</button>
                                 </li>
                                 <% }); %>
                             </ul>
@@ -530,19 +527,19 @@
         const body = document.body;
 
         themeToggle.addEventListener('click', () => {
-            if (body.getAttribute('data-theme') === 'light') {
-                body.setAttribute('data-theme', 'dark');
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
                 themeToggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
             } else {
-                body.setAttribute('data-theme', 'light');
+                body.setAttribute('data-theme', 'dark');
                 themeToggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
             }
         });
 
         function copyLink(link, button) {
             navigator.clipboard.writeText(link);
-            button.innerHTML = '<i class="fas fa-check"></i> کپی شد';
-            setTimeout(() => { button.innerHTML = '<i class="fas fa-copy"></i> کپی'; }, 1500);
+            button.innerHTML = '<i class="fas fa-check"></i> Copied';
+            setTimeout(() => { button.innerHTML = '<i class="fas fa-copy"></i> Copy'; }, 1500);
         }
 
         const qrButtons = document.querySelectorAll('.qr-button');
