@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= data.email %> - Subscription Panel</title>
+    <title><%= data && data.email ? data.email : 'User' %> - Subscription Panel</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;500;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -305,7 +305,7 @@
         }
 
         .link-item input {
-            flex: 1;
+            flex tundra: 1;
             background: transparent;
             border: none;
             color: var(--text-secondary);
@@ -368,7 +368,7 @@
             background: var(--danger-gradient);
             color: white;
             border: none;
-            border-radius: 50%;
+            border-radius: 50 queues%;
             width: 1.5rem;
             height: 1.5rem;
             cursor: pointer;
@@ -377,7 +377,7 @@
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <% function formatBytes(bytes, decimals=2) { 
-        if (bytes === 0) return '∞'; 
+        if (!bytes || bytes === 0) return '∞'; 
         const k = 1024; 
         const dm = decimals < 0 ? 0 : decimals; 
         const sizesEn = ['Bytes', 'KB', 'MB', 'GB', 'TB']; 
@@ -406,21 +406,21 @@
     } %>
 
     <% function getConnectionTitle(link) { 
-        if (!link || typeof link !== 'string') return null; 
+        if (!link || typeof link !== 'string') return 'Unnamed'; 
         const protocolMatch = link.match(/^(vmess|vless|shadowsocks|trojan):\/\//i); 
         const protocol = protocolMatch ? protocolMatch[1].toLowerCase() : null; 
         if (protocol === 'vmess') { 
             try { 
                 const base64Data = link.split('://')[1].split('#')[0].split('?')[0]; 
                 const decodedData = JSON.parse(atob(decodeURI(base64Data))); 
-                return decodedData.ps || null; 
+                return decodedData.ps || 'Unnamed'; 
             } catch (e) { 
                 console.error("Error parsing vmess:", e); 
-                return null; 
+                return 'Unnamed'; 
             } 
         } else { 
             const parts = link.split('#'); 
-            if (parts.length < 2) return null; 
+            if (parts.length < 2) return 'Unnamed'; 
             let title = parts[1].split('?')[0]; 
             try { 
                 title = decodeURIComponent(title); 
@@ -428,7 +428,7 @@
                 console.error(e); 
             } 
             title = title.replace(/[,\-–_]\s*(\d+D)?\s*(\d+H)?\s*(\d+M)?/gi, '').trim(); 
-            return title || null; 
+            return title || 'Unnamed'; 
         } 
     } %>
 </head>
@@ -459,26 +459,26 @@
                     </div>
                 </div>
                 <div class="username">
-                    <i class="fas fa-user-astronaut"></i> <%= data.email %>
+                    <i class="fas fa-user-astronaut"></i> <%= data && data.email ? data.email : 'Unknown User' %>
                 </div>
             </div>
             <div class="card-body">
                 <div class="info-grid">
                     <div class="info-item">
                         <div class="info-label" data-lang="status">Status</div>
-                        <div class="info-value"><%= data.enable ? "Active" : "Disabled" %></div>
+                        <div class="info-value"><%= data && data.enable !== undefined ? (data.enable ? 'Active' : 'Disabled') : 'N/A' %></div>
                     </div>
                     <div class="info-item">
                         <div class="info-label" data-lang="dataLimit">Data Limit</div>
-                        <div class="info-value"><%= formatBytes(data.total) %></div>
+                        <div class="info-value"><%= data && data.total !== undefined ? formatBytes(data.total) : 'N/A' %></div>
                     </div>
                     <div class="info-item">
                         <div class="info-label" data-lang="dataUsed">Data Used</div>
-                        <div class="info-value"><%= formatBytes((data.up + data.down)) %></div>
+                        <div class="info-value"><%= data && data.up !== undefined && data.down !== undefined ? formatBytes(data.up + data.down) : 'N/A' %></div>
                     </div>
                     <div class="info-item">
                         <div class="info-label" data-lang="expiration">Expiration</div>
-                        <div class="info-value"><%= formatRemainingTime(data.expiryTime) %></div>
+                        <div class="info-value"><%= data && data.expiryTime !== undefined ? formatRemainingTime(data.expiryTime) : 'N/A' %></div>
                     </div>
                 </div>
 
@@ -486,7 +486,7 @@
                     <h2 class="section-title" data-lang="downloadV2ray">Download V2Ray</h2>
                     <div class="platforms-container">
                         <div class="platforms-grid">
-                            <a href="v2rayng://install-config?url=<%= data.suburl %>" class="platform-card android">
+                            <a href="<%= data && data.suburl ? 'v2rayng://install-config?url=' + data.suburl : '#' %>" class="platform-card android">
                                 <i class="fab fa-android platform-icon"></i>
                                 <span data-lang="android">Android</span>
                             </a>
@@ -498,7 +498,7 @@
                                 <i class="fab fa-linux platform-icon"></i>
                                 <span data-lang="linux">Linux</span>
                             </a>
-                            <a href="streisand://install-config?url=<%= data.suburl %>" class="platform-card ios">
+                            <a href="<%= data && data.suburl ? 'streisand://install-config?url=' + data.suburl : '#' %>" class="platform-card ios">
                                 <i class="fab fa-apple platform-icon"></i>
                                 <span data-lang="ios">iOS</span>
                             </a>
@@ -506,22 +506,27 @@
                     </div>
                 </div>
 
-                <% if (data.enable) { %>
+                <% if (data && data.enable && data.suburl_content) { %>
                 <div class="links-section">
                     <h2 class="section-title" data-lang="configLinks">Config Links</h2>
                     <div class="accordion">
                         <div class="accordion-header" id="accordionToggle" data-lang="showLinks">Show Links</div>
                         <div class="accordion-content" id="accordionContent">
                             <ul class="links-list">
-                                <% const decodedFromBase64 = Buffer.from(data.suburl_content, 'base64').toString('utf-8'); 
-                                   const linksArray = decodedFromBase64.split('\n').filter(link => link.trim() !== ''); 
-                                   linksArray.forEach(link => { %>
+                                <% try { 
+                                    const decodedFromBase64 = Buffer.from(data.suburl_content, 'base64').toString('utf-8'); 
+                                    const linksArray = decodedFromBase64.split('\n').filter(link => link.trim() !== ''); 
+                                    linksArray.forEach(link => { %>
                                 <li class="link-item">
-                                    <input type="text" value="<%= getConnectionTitle(link) || 'Unnamed' %>" readonly>
+                                    <input type="text" value="<%= getConnectionTitle(link) %>" readonly>
                                     <button class="copy-button" onclick="copyLink('<%= link %>', this)"><i class="fas fa-copy"></i> <span data-lang="copy">Copy</span></button>
                                     <button class="qr-button" data-link="<%= link %>"><i class="fas fa-qrcode"></i> <span data-lang="qr">QR</span></button>
                                 </li>
                                 <% }); %>
+                                <% } catch (e) { %>
+                                <li class="link-item">Error loading config links</li>
+                                <% console.error('Error decoding suburl_content:', e); %>
+                                <% } %>
                             </ul>
                         </div>
                     </div>
@@ -598,10 +603,10 @@
             });
             // Update dynamic values
             document.querySelectorAll('.info-value').forEach((el, index) => {
-                if (index === 0) el.textContent = <%= data.enable %> ? translations[lang].active : translations[lang].disabled;
-                if (index === 1) el.textContent = formatBytes(<%= data.total %>);
-                if (index === 2) el.textContent = formatBytes(<%= data.up + data.down %>);
-                if (index === 3) el.textContent = formatRemainingTime(<%= data.expiryTime %>);
+                if (index === 0) el.textContent = <%= data && data.enable !== undefined ? (data.enable ? 'translations[lang].active' : 'translations[lang].disabled') : '"N/A"' %>;
+                if (index === 1) el.textContent = <%= data && data.total !== undefined ? 'formatBytes(data.total)' : '"N/A"' %>;
+                if (index === 2) el.textContent = <%= data && data.up !== undefined && data.down !== undefined ? 'formatBytes(data.up + data.down)' : '"N/A"' %>;
+                if (index === 3) el.textContent = <%= data && data.expiryTime !== undefined ? 'formatRemainingTime(data.expiryTime)' : '"N/A"' %>;
             });
         }
 
