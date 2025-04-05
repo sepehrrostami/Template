@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= data && data.email ? data.email : 'User' %> - Subscription Panel</title>
+    <title><%= data.email %> - Subscription Panel</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;500;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         :root {
@@ -55,12 +54,6 @@
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
-            transition: all var(--transition-normal) ease;
-        }
-
-        body[lang="fa"] {
-            font-family: 'Vazir', sans-serif;
-            direction: rtl;
         }
 
         @keyframes cyberShift {
@@ -91,15 +84,13 @@
 
         .card-header {
             padding: 1rem 0;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
         }
 
         .card-title {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            margin-bottom: 1rem;
         }
 
         h1 {
@@ -213,7 +204,7 @@
             font-weight: 500;
         }
 
-        .theme-toggle, .lang-toggle {
+        .theme-toggle {
             background: var(--glass-background);
             border: none;
             width: 2.5rem;
@@ -227,7 +218,7 @@
             transition: all var(--transition-normal) ease;
         }
 
-        .theme-toggle:hover, .lang-toggle:hover {
+        .theme-toggle:hover {
             color: #FF007A;
             transform: rotate(30deg);
             box-shadow: var(--glow-effect);
@@ -263,7 +254,6 @@
         .accordion-header::after {
             content: "▼";
             font-size: 0.75rem;
-            transition: transform var(--transition-normal) ease;
         }
 
         .accordion-header.active::after {
@@ -305,7 +295,7 @@
         }
 
         .link-item input {
-            flex tundra: 1;
+            flex: 1;
             background: transparent;
             border: none;
             color: var(--text-secondary);
@@ -368,7 +358,7 @@
             background: var(--danger-gradient);
             color: white;
             border: none;
-            border-radius: 50 queues%;
+            border-radius: 50%;
             width: 1.5rem;
             height: 1.5rem;
             cursor: pointer;
@@ -377,19 +367,18 @@
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <% function formatBytes(bytes, decimals=2) { 
-        if (!bytes || bytes === 0) return '∞'; 
+        if (bytes === 0) return '∞'; 
         const k = 1024; 
         const dm = decimals < 0 ? 0 : decimals; 
-        const sizesEn = ['Bytes', 'KB', 'MB', 'GB', 'TB']; 
-        const sizesFa = ['بایت', 'کیلوبایت', 'مگابایت', 'گیگابایت', 'ترابایت']; 
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']; 
         const i = Math.floor(Math.log(bytes) / Math.log(k)); 
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + (document.body.lang === 'fa' ? sizesFa[i] : sizesEn[i]); 
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]; 
     } %>
 
     <% function formatRemainingTime(expiryTime) { 
-        if (expiryTime === undefined || expiryTime === null || expiryTime === 0) return document.body.lang === 'fa' ? "نامحدود" : "Unlimited"; 
+        if (expiryTime === undefined || expiryTime === null || expiryTime === 0) return "Unlimited"; 
         const expiryTimeNum = parseInt(expiryTime, 10); 
-        if (isNaN(expiryTimeNum)) return document.body.lang === 'fa' ? "نامعتبر" : "Invalid"; 
+        if (isNaN(expiryTimeNum)) return "Invalid"; 
         const currentTime = Date.now(); 
         if (expiryTimeNum > currentTime) { 
             const remaining = expiryTimeNum - currentTime; 
@@ -397,30 +386,30 @@
             const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); 
             const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60)); 
             let result = []; 
-            if (days > 0) result.push(`${days} ${document.body.lang === 'fa' ? 'روز' : 'days'}`); 
-            if (hours > 0) result.push(`${hours} ${document.body.lang === 'fa' ? 'ساعت' : 'hours'}`); 
-            if (minutes > 0) result.push(`${minutes} ${document.body.lang === 'fa' ? 'دقیقه' : 'mins'}`); 
-            return result.join(document.body.lang === 'fa' ? " و " : ", ") || (document.body.lang === 'fa' ? "کمتر از یک دقیقه" : "Less than a minute"); 
+            if (days > 0) result.push(`${days} days`); 
+            if (hours > 0) result.push(`${hours} hours`); 
+            if (minutes > 0) result.push(`${minutes} mins`); 
+            return result.join(", ") || "Less than a minute"; 
         } 
-        return document.body.lang === 'fa' ? "منقضی شده" : "Expired"; 
+        return "Expired"; 
     } %>
 
     <% function getConnectionTitle(link) { 
-        if (!link || typeof link !== 'string') return 'Unnamed'; 
+        if (!link || typeof link !== 'string') return null; 
         const protocolMatch = link.match(/^(vmess|vless|shadowsocks|trojan):\/\//i); 
         const protocol = protocolMatch ? protocolMatch[1].toLowerCase() : null; 
         if (protocol === 'vmess') { 
             try { 
                 const base64Data = link.split('://')[1].split('#')[0].split('?')[0]; 
                 const decodedData = JSON.parse(atob(decodeURI(base64Data))); 
-                return decodedData.ps || 'Unnamed'; 
+                return decodedData.ps || null; 
             } catch (e) { 
                 console.error("Error parsing vmess:", e); 
-                return 'Unnamed'; 
+                return null; 
             } 
         } else { 
             const parts = link.split('#'); 
-            if (parts.length < 2) return 'Unnamed'; 
+            if (parts.length < 2) return null; 
             let title = parts[1].split('?')[0]; 
             try { 
                 title = decodeURIComponent(title); 
@@ -428,105 +417,95 @@
                 console.error(e); 
             } 
             title = title.replace(/[,\-–_]\s*(\d+D)?\s*(\d+H)?\s*(\d+M)?/gi, '').trim(); 
-            return title || 'Unnamed'; 
+            return title || null; 
         } 
     } %>
 </head>
 
-<body data-theme="dark" lang="en">
+<body data-theme="dark">
     <div class="container">
         <div class="card">
             <div class="card-header">
                 <div class="card-title">
-                    <h1 data-lang="subscription">Subscription</h1>
-                    <div>
-                        <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="5"></circle>
-                                <line x1="12" y1="1" x2="12" y2="3"></line>
-                                <line x1="12" y1="21" x2="12" y2="23"></line>
-                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                                <line x1="1" y1="12" x2="3" y2="12"></line>
-                                <line x1="21" y1="12" x2="23" y2="12"></line>
-                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                            </svg>
-                        </button>
-                        <button class="lang-toggle" id="langToggle" aria-label="Toggle Language">
-                            <i class="fas fa-globe"></i>
-                        </button>
-                    </div>
+                    <h1>Subscription</h1>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </button>
                 </div>
                 <div class="username">
-                    <i class="fas fa-user-astronaut"></i> <%= data && data.email ? data.email : 'Unknown User' %>
+                    <i class="fas fa-user-astronaut"></i> <%= data.email %>
                 </div>
             </div>
             <div class="card-body">
                 <div class="info-grid">
                     <div class="info-item">
-                        <div class="info-label" data-lang="status">Status</div>
-                        <div class="info-value"><%= data && data.enable !== undefined ? (data.enable ? 'Active' : 'Disabled') : 'N/A' %></div>
+                        <div class="info-label">Status</div>
+                        <div class="info-value"><%= data.enable ? "Active" : "Disabled" %></div>
                     </div>
                     <div class="info-item">
-                        <div class="info-label" data-lang="dataLimit">Data Limit</div>
-                        <div class="info-value"><%= data && data.total !== undefined ? formatBytes(data.total) : 'N/A' %></div>
+                        <div class="info-label">Data Limit</div>
+                        <div class="info-value"><%= formatBytes(data.total) %></div>
                     </div>
                     <div class="info-item">
-                        <div class="info-label" data-lang="dataUsed">Data Used</div>
-                        <div class="info-value"><%= data && data.up !== undefined && data.down !== undefined ? formatBytes(data.up + data.down) : 'N/A' %></div>
+                        <div class="info-label">Data Used</div>
+                        <div class="info-value"><%= formatBytes((data.up + data.down)) %></div>
                     </div>
                     <div class="info-item">
-                        <div class="info-label" data-lang="expiration">Expiration</div>
-                        <div class="info-value"><%= data && data.expiryTime !== undefined ? formatRemainingTime(data.expiryTime) : 'N/A' %></div>
+                        <div class="info-label">Expiration</div>
+                        <div class="info-value"><%= formatRemainingTime(data.expiryTime) %></div>
                     </div>
                 </div>
 
                 <div class="download-section">
-                    <h2 class="section-title" data-lang="downloadV2ray">Download V2Ray</h2>
+                    <h2 class="section-title">Download V2Ray</h2>
                     <div class="platforms-container">
                         <div class="platforms-grid">
-                            <a href="<%= data && data.suburl ? 'v2rayng://install-config?url=' + data.suburl : '#' %>" class="platform-card android">
+                            <a href="v2rayng://install-config?url=<%= data.suburl %>" class="platform-card android">
                                 <i class="fab fa-android platform-icon"></i>
-                                <span data-lang="android">Android</span>
+                                <span>Android</span>
                             </a>
                             <a href="https://github.com/2dust/v2rayN/releases/download/7.10.5/v2rayN-windows-64.zip" class="platform-card windows">
                                 <i class="fab fa-windows platform-icon"></i>
-                                <span data-lang="windows">Windows</span>
+                                <span>Windows</span>
                             </a>
                             <a href="https://github.com/MatsuriDayo/nekoray/releases/download/4.0.1/nekoray-4.0.1-2024-12-12-linux64.zip" class="platform-card linux">
                                 <i class="fab fa-linux platform-icon"></i>
-                                <span data-lang="linux">Linux</span>
+                                <span>Linux</span>
                             </a>
-                            <a href="<%= data && data.suburl ? 'streisand://install-config?url=' + data.suburl : '#' %>" class="platform-card ios">
+                            <a href="streisand://install-config?url=<%= data.suburl %>" class="platform-card ios">
                                 <i class="fab fa-apple platform-icon"></i>
-                                <span data-lang="ios">iOS</span>
+                                <span>iOS</span>
                             </a>
                         </div>
                     </div>
                 </div>
 
-                <% if (data && data.enable && data.suburl_content) { %>
+                <% if (data.enable) { %>
                 <div class="links-section">
-                    <h2 class="section-title" data-lang="configLinks">Config Links</h2>
+                    <h2 class="section-title">Config Links</h2>
                     <div class="accordion">
-                        <div class="accordion-header" id="accordionToggle" data-lang="showLinks">Show Links</div>
+                        <div class="accordion-header" id="accordionToggle">Show Links</div>
                         <div class="accordion-content" id="accordionContent">
                             <ul class="links-list">
-                                <% try { 
-                                    const decodedFromBase64 = Buffer.from(data.suburl_content, 'base64').toString('utf-8'); 
-                                    const linksArray = decodedFromBase64.split('\n').filter(link => link.trim() !== ''); 
-                                    linksArray.forEach(link => { %>
+                                <% const decodedFromBase64 = Buffer.from(data.suburl_content, 'base64').toString('utf-8'); 
+                                   const linksArray = decodedFromBase64.split('\n').filter(link => link.trim() !== ''); 
+                                   linksArray.forEach(link => { %>
                                 <li class="link-item">
-                                    <input type="text" value="<%= getConnectionTitle(link) %>" readonly>
-                                    <button class="copy-button" onclick="copyLink('<%= link %>', this)"><i class="fas fa-copy"></i> <span data-lang="copy">Copy</span></button>
-                                    <button class="qr-button" data-link="<%= link %>"><i class="fas fa-qrcode"></i> <span data-lang="qr">QR</span></button>
+                                    <input type="text" value="<%= getConnectionTitle(link) || 'Unnamed' %>" readonly>
+                                    <button class="copy-button" onclick="copyLink('<%= link %>', this)"><i class="fas fa-copy"></i> Copy</button>
+                                    <button class="qr-button" data-link="<%= link %>"><i class="fas fa-qrcode"></i> QR</button>
                                 </li>
                                 <% }); %>
-                                <% } catch (e) { %>
-                                <li class="link-item">Error loading config links</li>
-                                <% console.error('Error decoding suburl_content:', e); %>
-                                <% } %>
                             </ul>
                         </div>
                     </div>
@@ -544,71 +523,8 @@
     </div>
 
     <script>
-        const translations = {
-            en: {
-                subscription: "Subscription",
-                status: "Status",
-                dataLimit: "Data Limit",
-                dataUsed: "Data Used",
-                expiration: "Expiration",
-                downloadV2ray: "Download V2Ray",
-                android: "Android",
-                windows: "Windows",
-                linux: "Linux",
-                ios: "iOS",
-                configLinks: "Config Links",
-                showLinks: "Show Links",
-                copy: "Copy",
-                qr: "QR",
-                copied: "Copied",
-                active: "Active",
-                disabled: "Disabled",
-                unlimited: "Unlimited",
-                invalid: "Invalid",
-                expired: "Expired"
-            },
-            fa: {
-                subscription: "اشتراک",
-                status: "وضعیت",
-                dataLimit: "محدودیت داده",
-                dataUsed: "داده مصرف‌شده",
-                expiration: "انقضا",
-                downloadV2ray: "دانلود V2Ray",
-                android: "اندروید",
-                windows: "ویندوز",
-                linux: "لینوکس",
-                ios: "آی‌اواس",
-                configLinks: "لینک‌های پیکربندی",
-                showLinks: "نمایش لینک‌ها",
-                copy: "کپی",
-                qr: "کیوآر",
-                copied: "کپی شد",
-                active: "فعال",
-                disabled: "غیرفعال",
-                unlimited: "نامحدود",
-                invalid: "نامعتبر",
-                expired: "منقضی شده"
-            }
-        };
-
         const themeToggle = document.getElementById('themeToggle');
-        const langToggle = document.getElementById('langToggle');
         const body = document.body;
-
-        function updateLanguage(lang) {
-            body.setAttribute('lang', lang);
-            document.querySelectorAll('[data-lang]').forEach(element => {
-                const key = element.getAttribute('data-lang');
-                element.textContent = translations[lang][key];
-            });
-            // Update dynamic values
-            document.querySelectorAll('.info-value').forEach((el, index) => {
-                if (index === 0) el.textContent = <%= data && data.enable !== undefined ? (data.enable ? 'translations[lang].active' : 'translations[lang].disabled') : '"N/A"' %>;
-                if (index === 1) el.textContent = <%= data && data.total !== undefined ? 'formatBytes(data.total)' : '"N/A"' %>;
-                if (index === 2) el.textContent = <%= data && data.up !== undefined && data.down !== undefined ? 'formatBytes(data.up + data.down)' : '"N/A"' %>;
-                if (index === 3) el.textContent = <%= data && data.expiryTime !== undefined ? 'formatRemainingTime(data.expiryTime)' : '"N/A"' %>;
-            });
-        }
 
         themeToggle.addEventListener('click', () => {
             if (body.getAttribute('data-theme') === 'dark') {
@@ -620,17 +536,10 @@
             }
         });
 
-        langToggle.addEventListener('click', () => {
-            const currentLang = body.getAttribute('lang');
-            const newLang = currentLang === 'en' ? 'fa' : 'en';
-            updateLanguage(newLang);
-        });
-
         function copyLink(link, button) {
             navigator.clipboard.writeText(link);
-            const lang = body.getAttribute('lang');
-            button.querySelector('span').textContent = translations[lang].copied;
-            setTimeout(() => { button.querySelector('span').textContent = translations[lang].copy; }, 1500);
+            button.innerHTML = '<i class="fas fa-check"></i> Copied';
+            setTimeout(() => { button.innerHTML = '<i class="fas fa-copy"></i> Copy'; }, 1500);
         }
 
         const qrButtons = document.querySelectorAll('.qr-button');
@@ -670,9 +579,6 @@
                 accordionToggle.classList.add('active');
             }
         });
-
-        // Initialize with English
-        updateLanguage('en');
     </script>
 </body>
 
