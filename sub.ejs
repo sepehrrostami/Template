@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= data.email %> - اطلاعات اشتراک</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazir:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #4f46e5 0%, #a855f7 100%);
+            --secondary-gradient: linear-gradient(135deg, #3b82f6 0%, #22d3ee 100%);
+            --success-gradient: linear-gradient(135deg, #16a34a 0%, #4ade80 100%);
+            --warning-gradient: linear-gradient(135deg, #d97706 0%, #facc15 100%);
+            --danger-gradient: linear-gradient(135deg, #dc2626 0%, #f87171 100%);
+            --disabled-gradient: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
+            --background-color: #f1f5f9;
+            --card-background: rgba(255, 255, 255, 0.95);
+            --glass-background: rgba(255, 255, 255, 0.6);
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-tertiary: #64748b;
+            --border-radius: 12px;
+            --box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+            --transition-fast: 0.15s;
+            --transition-normal: 0.25s;
+            --blur-sm: 6px;
+        }
+
+        [data-theme="dark"] {
+            --background-color: #1e293b;
+            --card-background: rgba(30, 41, 59, 0.95);
+            --glass-background: rgba(30, 41, 59, 0.6);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazir', sans-serif;
+            background: var(--background-color);
+            background-image: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(168, 85, 247, 0.05) 100%);
+            background-size: 150% 150%;
+            animation: gradientShift 20s infinite alternate ease-in-out;
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .card {
+            background: var(--card-background);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            padding: 1rem;
+            backdrop-filter: blur(var(--blur-sm));
+        }
+
+        .card-header {
+            padding: 1.5rem 1.5rem 0;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .username {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item {
+            background: var(--glass-background);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            transition: all var(--transition-normal) ease;
+        }
+
+        .info-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-tertiary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+
+        .download-section {
+            margin-top: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -0.25rem;
+            right: 0;
+            width: 2.5rem;
+            height: 0.15rem;
+            background: var(--primary-gradient);
+            border-radius: 0.1rem;
+        }
+
+        .platforms-container {
+            background: var(--glass-background);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            transition: all var(--transition-normal) ease;
+        }
+
+        .platforms-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-between;
+        }
+
+        .platform-card {
+            flex: 1;
+            min-width: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-primary);
+            padding: 0.75rem;
+            background: var(--glass-background);
+            border-radius: var(--border-radius);
+            transition: all var(--transition-normal) ease;
+        }
+
+        .platform-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .platform-icon {
+            font-size: 2rem;
+            background: var(--secondary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .platform-card span {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .theme-toggle {
+            background: var(--glass-background);
+            border: none;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-tertiary);
+            transition: all var(--transition-normal) ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--text-primary);
+            transform: rotate(30deg);
+        }
+
+        .links-section {
+            margin-top: 1.5rem;
+        }
+
+        .accordion {
+            background: var(--glass-background);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 1rem;
+            cursor: pointer;
+            background: var(--primary-gradient);
+            color: white;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all var(--transition-normal) ease;
+        }
+
+        .accordion-header:hover {
+            opacity: 0.9;
+        }
+
+        .accordion-header::after {
+            content: "▼";
+            font-size: 0.75rem;
+        }
+
+        .accordion-header.active::after {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height var(--transition-normal) ease;
+            padding: 0 1rem;
+        }
+
+        .accordion-content.active {
+            padding: 1rem;
+            max-height: 500px;
+        }
+
+        .links-list {
+            list-style: none;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--glass-background);
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            transition: all var(--transition-normal) ease;
+        }
+
+        .link-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--box-shadow);
+        }
+
+        .link-item input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            padding: 0.25rem;
+            outline: none;
+            text-align: right;
+        }
+
+        .link-item button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all var(--transition-fast) ease;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .copy-button {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .copy-button:hover {
+            opacity: 0.9;
+        }
+
+        .qr-button {
+            background: var(--secondary-gradient);
+            color: white;
+        }
+
+        .qr-button:hover {
+            opacity: 0.9;
+        }
+
+        .qr-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--card-background);
+            padding: 1.25rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            backdrop-filter: blur(var(--blur-sm));
+            z-index: 1000;
+        }
+
+        .qr-close-button {
+            text-align: left;
+            margin-bottom: 0.5rem;
+        }
+
+        .qr-close-button button {
+            background: var(--danger-gradient);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 1.5rem;
+            height: 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <% function formatBytes(bytes, decimals=2) { 
+        if (bytes === 0) return '∞'; 
+        const k = 1024; 
+        const dm = decimals < 0 ? 0 : decimals; 
+        const sizes = ['بایت', 'کیلوبایت', 'مگابایت', 'گیگابایت', 'ترابایت']; 
+        const i = Math.floor(Math.log(bytes) / Math.log(k)); 
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]; 
+    } %>
+
+    <% function formatRemainingTime(expiryTime) { 
+        try { 
+            if (!expiryTime) throw new Error("زمان انقضا تعریف نشده است."); 
+            const expiryTimeNum = parseInt(expiryTime, 10); 
+            if (isNaN(expiryTimeNum)) throw new Error("زمان انقضا باید عدد باشد."); 
+            const currentTime = Date.now(); 
+            if (expiryTimeNum === 0) return "∞"; 
+            if (expiryTimeNum > currentTime) { 
+                const remaining = expiryTimeNum - currentTime; 
+                const days = Math.floor(remaining / (1000 * 60 * 60 * 24)); 
+                const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); 
+                const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60)); 
+                let result = []; 
+                if (days > 0) result.push(`${days} روز`); 
+                if (hours > 0) result.push(`${hours} ساعت`); 
+                if (minutes > 0) result.push(`${minutes} دقیقه`); 
+                return result.join(" و ") || "کمتر از یک دقیقه"; 
+            } else { 
+                return "منقضی شده"; 
+            } 
+        } catch (error) { 
+            console.error("خطا:", error.message); 
+            return "خطا"; 
+        } 
+    } %>
+
+    <% function getConnectionTitle(link) { 
+        if (!link || typeof link !== 'string') return null; 
+        const protocolMatch = link.match(/^(vmess|vless|shadowsocks|trojan):\/\//i); 
+        const protocol = protocolMatch ? protocolMatch[1].toLowerCase() : null; 
+        if (protocol === 'vmess') { 
+            try { 
+                const base64Data = link.split('://')[1].split('#')[0].split('?')[0]; 
+                const decodedData = JSON.parse(atob(decodeURI(base64Data))); 
+                return decodedData.ps || null; 
+            } catch (e) { 
+                console.error("خطا در پردازش vmess:", e); 
+                return null; 
+            } 
+        } else { 
+            const parts = link.split('#'); 
+            if (parts.length < 2) return null; 
+            let title = parts[1].split('?')[0]; 
+            try { 
+                title = decodeURIComponent(title); 
+            } catch (e) { 
+                console.error(e); 
+            } 
+            title = title.replace(/[,\-–_]\s*(\d+D)?\s*(\d+H)?\s*(\d+M)?/gi, '').trim(); 
+            return title || null; 
+        } 
+    } %>
+</head>
+
+<body data-theme="light">
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <h1>اشتراک شما</h1>
+                    <button class="theme-toggle" id="themeToggle" aria-label="تغییر تم">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                    </button>
+                </div>
+                <div class="username">
+                    <i class="fas fa-user-circle"></i> <%= data.email %>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">وضعیت</div>
+                        <div class="info-value"><%= data.enable ? "فعال" : "غیرفعال" %></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">محدودیت داده</div>
+                        <div class="info-value"><%= formatBytes(data.total) %></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">داده مصرف‌شده</div>
+                        <div class="info-value"><%= formatBytes((data.up + data.down)) %></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">انقضا</div>
+                        <div class="info-value"><%= formatRemainingTime(data.expiryTime) %></div>
+                    </div>
+                </div>
+
+                <div class="download-section">
+                    <h2 class="section-title">دانلود V2Ray</h2>
+                    <div class="platforms-container">
+                        <div class="platforms-grid">
+                            <a href="v2rayng://install-config?url=<%= data.suburl %>" class="platform-card android">
+                                <i class="fab fa-android platform-icon"></i>
+                                <span>اندروید</span>
+                            </a>
+                            <a href="https://github.com/2dust/v2rayN/releases/download/7.10.5/v2rayN-windows-64.zip" class="platform-card windows">
+                                <i class="fab fa-windows platform-icon"></i>
+                                <span>ویندوز</span>
+                            </a>
+                            <a href="https://github.com/MatsuriDayo/nekoray/releases/download/4.0.1/nekoray-4.0.1-2024-12-12-linux64.zip" class="platform-card linux">
+                                <i class="fab fa-linux platform-icon"></i>
+                                <span>لینوکس</span>
+                            </a>
+                            <a href="streisand://install-config?url=<%= data.suburl %>" class="platform-card ios">
+                                <i class="fab fa-apple platform-icon"></i>
+                                <span>آی‌اواس</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <% if (data.enable) { %>
+                <div class="links-section">
+                    <h2 class="section-title">لینک‌های پیکربندی</h2>
+                    <div class="accordion">
+                        <div class="accordion-header" id="accordionToggle">نمایش لینک‌ها</div>
+                        <div class="accordion-content" id="accordionContent">
+                            <ul class="links-list">
+                                <% const decodedFromBase64 = Buffer.from(data.suburl_content, 'base64').toString('utf-8'); 
+                                   const linksArray = decodedFromBase64.split('\n').filter(link => link.trim() !== ''); 
+                                   linksArray.forEach(link => { %>
+                                <li class="link-item">
+                                    <input type="text" value="<%= getConnectionTitle(link) || 'بدون نام' %>" readonly>
+                                    <button class="copy-button" onclick="copyLink('<%= link %>', this)"><i class="fas fa-copy"></i> کپی</button>
+                                    <button class="qr-button" data-link="<%= link %>"><i class="fas fa-qrcode"></i> کیوآر</button>
+                                </li>
+                                <% }); %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <div class="qr-popup" id="qrPopup">
+        <div class="qr-close-button">
+            <button onclick="closeQrPopup()">X</button>
+        </div>
+        <div id="qrCodeContainer"></div>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            if (body.getAttribute('data-theme') === 'light') {
+                body.setAttribute('data-theme', 'dark');
+                themeToggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+            } else {
+                body.setAttribute('data-theme', 'light');
+                themeToggle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+            }
+        });
+
+        function copyLink(link, button) {
+            navigator.clipboard.writeText(link);
+            button.innerHTML = '<i class="fas fa-check"></i> کپی شد';
+            setTimeout(() => { button.innerHTML = '<i class="fas fa-copy"></i> کپی'; }, 1500);
+        }
+
+        const qrButtons = document.querySelectorAll('.qr-button');
+        const qrPopup = document.getElementById('qrPopup');
+        const qrCodeContainer = document.getElementById('qrCodeContainer');
+
+        qrButtons.forEach((qrButton) => {
+            qrButton.addEventListener('click', () => {
+                const link = qrButton.dataset.link;
+                qrCodeContainer.innerHTML = '';
+                new QRCode(qrCodeContainer, {
+                    text: link,
+                    width: 200,
+                    height: 200,
+                    correctLevel: QRCode.CorrectLevel.L
+                });
+                qrPopup.style.display = 'block';
+            });
+        });
+
+        function closeQrPopup() {
+            qrPopup.style.display = 'none';
+        }
+
+        const accordionToggle = document.getElementById('accordionToggle');
+        const accordionContent = document.getElementById('accordionContent');
+
+        accordionToggle.addEventListener('click', () => {
+            const isActive = accordionContent.classList.contains('active');
+            if (isActive) {
+                accordionContent.classList.remove('active');
+                accordionContent.style.maxHeight = '0';
+                accordionToggle.classList.remove('active');
+            } else {
+                accordionContent.classList.add('active');
+                accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';
+                accordionToggle.classList.add('active');
+            }
+        });
+    </script>
+</body>
+
+</html>
